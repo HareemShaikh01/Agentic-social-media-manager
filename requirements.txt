@@ -1,0 +1,31 @@
+# Backend framework
+fastapi
+uvicorn[standard]
+
+# Environment & Config
+python-dotenv
+pydantic-settings
+
+# AI integrations
+openai
+
+# Image handling
+pillow
+python-multipart
+requests
+
+# CSV handling
+pandas
+
+# Email service
+sib-api-v3-sdk  # Brevo SDK
+
+# Utils
+python-dateutil
+tenacity
+loguru
+
+# Dev & testing (optional but recommended)
+pytest
+black
+isort
