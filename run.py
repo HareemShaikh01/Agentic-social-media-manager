@@ -4,6 +4,7 @@ import logging
 from app.routes.env_routes import router as env_router
 from app.routes.clients_route import router as clients_router
 from app.routes.category_topic_route import router as category_topic_router
+from app.routes.image_route import router as image_router
 
 load_dotenv()
 
@@ -17,6 +18,8 @@ app = FastAPI(title="Social Media AI Backend MVP")
 app.include_router(env_router, prefix="/env", tags=["Environment Config"])
 app.include_router(clients_router, prefix="/clients", tags=["Client Management"])
 app.include_router(category_topic_router, tags=["Categories and Topics"])
+app.include_router(image_router, prefix="/images", tags=["Image Management"])
+
 
 @app.get("/")
 def home():
