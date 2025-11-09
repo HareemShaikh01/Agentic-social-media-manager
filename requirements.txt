@@ -8,24 +8,15 @@ pydantic-settings
 
 # AI integrations
 openai
+replicate
 
 # Image handling
 pillow
 python-multipart
 requests
 
-# CSV handling
+# CSV / Data handling
 pandas
 
-# Email service
-sib-api-v3-sdk  # Brevo SDK
 
-# Utils
-python-dateutil
-tenacity
-loguru
 
-# Dev & testing (optional but recommended)
-pytest
-black
-isort

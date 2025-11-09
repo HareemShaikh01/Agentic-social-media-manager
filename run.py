@@ -5,7 +5,7 @@ from app.routes.env_routes import router as env_router
 from app.routes.clients_route import router as clients_router
 from app.routes.category_topic_route import router as category_topic_router
 from app.routes.image_route import router as image_router
-
+from app.routes.post_route import router as post_router
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -19,6 +19,7 @@ app.include_router(env_router, prefix="/env", tags=["Environment Config"])
 app.include_router(clients_router, prefix="/clients", tags=["Client Management"])
 app.include_router(category_topic_router, tags=["Categories and Topics"])
 app.include_router(image_router, prefix="/images", tags=["Image Management"])
+app.include_router(post_router, prefix="/posts", tags=["Post Creation"])
 
 
 @app.get("/")
