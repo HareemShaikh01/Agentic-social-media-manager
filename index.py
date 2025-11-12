@@ -7,6 +7,7 @@ from app.routes.category_topic_route import router as category_topic_router
 from app.routes.image_route import router as image_router
 from app.routes.post_route import router as post_router
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 
 
@@ -38,6 +39,10 @@ app.include_router(post_router, prefix="/posts", tags=["Post Creation"])
 @app.get("/")
 def home():
     return {"message": "Social media AI system Backend is running 🚀"}
+
+
+handler = Mangum(app)
+
 
 if __name__ == "__main__":
     import uvicorn

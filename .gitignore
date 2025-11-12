@@ -166,7 +166,7 @@ cython_debug/
 # Data files and directories (based on your project structure)
 data/
 *.csv
-*.json
+.json
 *.db
 *.sqlite
 
@@ -220,3 +220,4 @@ jwt-key.pub
 *.pdf
 *.doc
 *.docx
+.vercel
