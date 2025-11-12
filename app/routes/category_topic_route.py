@@ -108,6 +108,36 @@ def search_topics(category_id: str = Query(...)):
 
     return {"topics": topics}
 
+@router.get("/get-all-categories")
+def get_all_categories():
+    ensure_csv(CATEGORY_CSV, ["category_id", "category_name"])
+    categories = []
+
+    with CATEGORY_CSV.open() as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row["category_id"] and row["category_name"]:
+                categories.append({
+                    "category_id": row["category_id"].strip(),
+                    "category_name": row["category_name"].strip()
+                })
+
+    return {"categories": categories}
+
+
+
+@router.get("/get-all-topics")
+def get_all_topics():
+    ensure_csv(TOPIC_CSV, ["topic_id", "category_id", "title", "description"])
+    topics = []
+
+    with TOPIC_CSV.open() as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            topics.append(row)
+
+    return {"topics": topics}
+
 
 @router.delete("/remove-topic")
 def remove_topic(topic_id: str = Query(...)):
@@ -131,7 +161,6 @@ def remove_category(category_id: str = Query(...)):
     ensure_csv(CATEGORY_CSV, ["category_id", "category_name"])
     ensure_csv(TOPIC_CSV, ["topic_id", "category_id", "title", "description"])
 
-    # Remove category
     rows = list(csv.reader(CATEGORY_CSV.open()))
     header, *data = rows
     updated = [r for r in data if r[0].strip() != category_id.strip()]
@@ -142,7 +171,7 @@ def remove_category(category_id: str = Query(...)):
     with CATEGORY_CSV.open("w", newline="") as f:
         csv.writer(f).writerows([header] + updated)
 
-    # Remove all associated topics
+    # Remove all related topics
     topic_rows = list(csv.reader(TOPIC_CSV.open()))
     topic_header, *topic_data = topic_rows
     topic_updated = [r for r in topic_data if r[1].strip() != category_id.strip()]

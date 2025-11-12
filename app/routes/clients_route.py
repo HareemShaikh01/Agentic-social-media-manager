@@ -156,3 +156,34 @@ def remove_client_data(payload: RemoveClientField):
     del profile[payload.field_name]
     profile_path.write_text(json.dumps(profile, indent=4))
     return {"status": "Field removed successfully"}
+
+
+
+@router.get("/all-clients")
+def get_all_clients():
+    if not CLIENT_ROOT.exists():
+        raise HTTPException(404, "No clients found")
+
+    clients_list = []
+
+    for folder in CLIENT_ROOT.iterdir():
+        profile_path = folder / "profile.json"
+        if profile_path.exists():
+            profile = json.loads(profile_path.read_text())
+            client_data = {
+                "id": profile.get("client_id"),
+                "name": profile.get("client_name"),
+                "focus": profile.get("focus"),
+                "services": profile.get("services"),
+                "business_description": profile.get("business_description"),
+                "contact_info": profile.get("contact_info"),
+                "website": profile.get("website"),
+                "number": profile.get("number"),
+                "mail": profile.get("mail")
+            }
+            clients_list.append(client_data)
+
+    if not clients_list:
+        raise HTTPException(404, "No client data found")
+
+    return {"clients": clients_list}
