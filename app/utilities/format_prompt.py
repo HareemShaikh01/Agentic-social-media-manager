@@ -62,81 +62,55 @@ def get_client_profile(client_id: str) -> ClientCreate:
 
 # -------------------- Prompt Builder --------------------
 
-# -------------------- Prompt Builder --------------------
-
 def build_full_prompt(client_id: str, visual_style: str, topic_titles: list[str], number_of_posts: int = 1) -> str:
-    """
-    Build a full prompt for the AI to generate multiple posts.
-
-    Args:
-        client_id: ID of the client
-        visual_style: Design style (e.g., Poster / Ad Style)
-        topic_titles: List of topic titles to include in the posts
-        number_of_posts: Number of posts to generate
-
-    Returns:
-        str: Prompt string
-    """
     client: ClientCreate = get_client_profile(client_id)
-    
     topics_formatted = ", ".join(topic_titles)
-    
+
     prompt = f"""
-You are a professional social media content and design assistant.
+You are an AI expert in creating **social media content for businesses**.
 
-Your job is to create **{number_of_posts} social media posts** (captions and layout plans) based on the client details below.
+Generate **{number_of_posts} posts** for **{client.client_name}**, each containing:
+1. **caption**
+2. **hashtags**
+3. **image_prompt** fully actionable for nano-banana image generation.
 
----
-
-### CLIENT INFORMATION
-- Name: {client.client_name}
-- Focus / Industry: {client.focus}
+### CLIENT INFO
 - Services: {client.services}
-- Description: {client.business_description}
 - Audience: {client.audience}
-- Writing Style: {client.writing_instructions}
 - Tagline: {client.tagline}
-- Call To Actions: {', '.join(client.call_to_actions)}
-- Caption Ending: {client.caption_ending}
-- Writing Samples: {', '.join(client.writing_samples)}
-- Contact Info: {client.contact_info}
-- Website: {client.website}
-- Number: {client.number}
-- Mail: {client.mail}
-- Logo URLs: {', '.join(client.logo_urls)}
-
----
-
-### DESIGN INFORMATION
 - Brand Colors: {', '.join(client.design_guide.brand_colors)}
-- Typography: {client.design_guide.typography}
 - Design Style: {client.design_guide.design_style}
 - Image Mood: {client.design_guide.image_mood}
 - Dos & Don'ts: {client.design_guide.dos_donts}
-- Reference Links: {', '.join(client.design_guide.reference_links)}
-- Asset Notes: {client.design_guide.asset_notes}
-- Format Preferences: {', '.join(client.design_guide.format_preferences)}
-- Design Checkpoints: {client.design_guide.design_checkpoints}
-- Visual Style: {visual_style}
-- Topics: [{topics_formatted}]
+- Contact Info: {client.contact_info}, {client.website}, {client.number}, {client.mail}
 
----
+### TOPICS
+{topics_formatted}
 
-### IMPORTANT INSTRUCTIONS
-- Respond **STRICTLY in JSON format**.
-- Return an **array of exactly {number_of_posts} objects**.
-- Do NOT include any extra text, explanation, or notes outside the JSON array.
-- Each object MUST strictly follow the template below:
+## visual style demanded
+The visual style should be: {visual_style}
+
+### CAPTION RULES
+- Short, engaging, audience-targeted, aligned with client tone.
+- Include one relevant CTA from: {', '.join(client.call_to_actions)}
+- End with: {client.caption_ending}
+- Do not include hashtags inside caption.
+
+### IMAGE PROMPT RULES
+it should strictly follow this framework:
+"generate social media post for x business which provide y services to z audience. Add contact details (website,number,mail). The visual style should be this. The design should incorporate these brand colors"
+
+### OUTPUT FORMAT
+Respond **strictly in JSON array**:
 
 [
 {{
-  "caption": "Short caption suitable for Instagram",
-  "hashtags": ["#brand", "#service", "#city"],
-  "image_prompt": "Image generation prompt for design model",
-  "layout_notes": "How the text and visuals should be placed"
+  "caption": "Brighten your child's smile today! Keep their teeth happy and healthy with our expert dental care.",
+  "hashtags": ["#DentalCare", "#HealthySmiles", "#KidsDentist"],
+  "image_prompt": "Generate a vibrant social media post for Zuhd Dental which provides teeth whitening services to audiences aged 25 seeking confident, healthy smiles. Add contact details (https://zuhddental.com, +1 (872) 258-9898, care@zuhddental.com).The design should incorporate brand colors #E9E6DF, #7DA89A, and #1C1C1C. Must follow the design of the reference image."
 }}
 ]
 
-- Each object in the array should be **unique** and suitable for posting independently.
+Generate **{number_of_posts} unique posts**, visually consistent with the client’s identity and topics.
 """
     return prompt

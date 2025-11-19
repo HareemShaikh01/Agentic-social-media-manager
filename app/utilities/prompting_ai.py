@@ -17,7 +17,6 @@ def generate_caption_and_image_prompt(prompt: str) -> list[dict]:
       - caption
       - hashtags
       - image_prompt
-      - layout_notes
 
     Returns a list of dicts.
     """
@@ -44,7 +43,7 @@ def generate_caption_and_image_prompt(prompt: str) -> list[dict]:
             raise ValueError("Some items in the AI output array are not objects.")
         
         # Optional: check required keys in each dict
-        required_keys = {"caption", "hashtags", "image_prompt", "layout_notes"}
+        required_keys = {"caption", "hashtags", "image_prompt"}
         for i, item in enumerate(data):
             missing_keys = required_keys - item.keys()
             if missing_keys:
