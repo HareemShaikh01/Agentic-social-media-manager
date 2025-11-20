@@ -38,7 +38,7 @@ app.include_router(post_router, prefix="/posts", tags=["Post Creation"])
 
 @app.get("/")
 def home():
-    return {"message": "Social media AI system Backend is running 🚀"}
+    return {"message": "Social media AI system Backend is running "}
 
 
 handler = Mangum(app)
